@@ -13,7 +13,7 @@ app.use(helmet())
 app.use(cors())
 
 app.get('/', (req, res) => {
-  res.send(200, "Hello, world!");
+  res.send(200, "Hello, boilerplate!");
 })
 
 module.exports = app;
