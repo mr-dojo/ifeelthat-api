@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
-const { NODE_ENV } = require("./config");
+const { NODE_ENV, CLIENT_ORIGIN } = require("./config");
 
 const app = express();
 
@@ -11,7 +11,11 @@ const morganSetting = NODE_ENV === "production" ? "tiny" : "dev";
 
 app.use(morgan(morganSetting));
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: CLIENT_ORIGIN
+  })
+);
 
 app.get("/", (req, res) => {
   res.send(200, "Hello, boilerplate!");
