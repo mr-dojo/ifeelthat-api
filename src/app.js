@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
+const feelingRouter = require("./feeling-endpoint/feeling-router.js");
+
 const { NODE_ENV, CLIENT_ORIGIN } = require("./config");
 
 const app = express();
@@ -16,10 +18,7 @@ app.use(
     origin: CLIENT_ORIGIN
   })
 );
-
-app.get("/", (req, res) => {
-  res.send(200, "Hello, boilerplate!");
-});
+app.use("/feeling", feelingRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
