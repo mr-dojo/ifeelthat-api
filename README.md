@@ -10,6 +10,10 @@ Start nodemon for the application `npm run dev`
 
 Run the tests `npm test`
 
+Seeding databases
+
+- Seed ifeelthat `psql -U carlo -d ifeelthat -f ./seeds/seed.ifeelthat.sql`
+
 ## Deploying
 
 You can run `npm run deploy` which will push to this remote's master branch, deploying the website.
