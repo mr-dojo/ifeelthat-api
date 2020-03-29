@@ -13,6 +13,7 @@ Run the tests `npm test`
 Seeding databases
 
 - Seed ifeelthat `psql -U carlo -d ifeelthat -f ./seeds/seed.ifeelthat.sql`
+- Seed ifeelthat test `psql -U carlo -d ifeelthattest -f ./seeds/seed.ifeelthat.sql`
 
 ## Deploying
 
