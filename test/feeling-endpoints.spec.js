@@ -1,5 +1,6 @@
 const app = require("../src/app");
 const knex = require("knex");
+const { makeTestInput } = require("./feeling.fixtures");
 
 describe("feeling endpoints", () => {
   let db;
@@ -36,18 +37,7 @@ describe("feeling endpoints", () => {
     });
 
     context("Given the feeling table has rows", () => {
-      let testFeelings = [
-        {
-          id: 1,
-          emotion: "Anger",
-          color: "Blue"
-        },
-        {
-          id: 2,
-          emotion: "Guilt",
-          color: "Orange"
-        }
-      ];
+      const { testFeelings } = makeTestInput();
 
       beforeEach("insert items", () => {
         return db.into("feeling").insert(testFeelings);
@@ -57,6 +47,109 @@ describe("feeling endpoints", () => {
         return supertest(app)
           .get("/feeling")
           .expect(200, testFeelings);
+      });
+    });
+  });
+
+  describe("POST /feeling", () => {
+    const { testInvalidInput, testValidInput } = makeTestInput();
+
+    it("If given invalid req data, responds with 422 and error message", () => {
+      return supertest(app)
+        .post("/feeling")
+        .send(testInvalidInput)
+        .expect(422, { error: { message: `Invalid input data` } });
+    });
+
+    it("If given valid req data, responds with 200 and created item", () => {
+      return supertest(app)
+        .post("/feeling")
+        .send(testValidInput)
+        .expect(201, testValidInput);
+    });
+  });
+
+  describe(`GET /feeling/:id`, () => {
+    context(`Given no items`, () => {
+      it(`responds with 404`, () => {
+        const feelingId = 123456;
+        return supertest(app)
+          .get(`/feeling/${feelingId}`)
+          .expect(404, {
+            error: { message: `Feeling with that id doesn't exist` }
+          });
+      });
+    });
+
+    context("Given there are rows in the database", () => {
+      const { testFeelings } = makeTestInput();
+
+      beforeEach("insert feelings", () => {
+        return db.into("feeling").insert(testFeelings);
+      });
+
+      it("GET /feeling/:id responds with 200 and the specified item", () => {
+        const feelingId = 2;
+        const expectedItem = testFeelings[feelingId - 1];
+        return supertest(app)
+          .get(`/feeling/${feelingId}`)
+          .expect(200, expectedItem);
+      });
+    });
+  });
+
+  describe("PATCH /feelings/:id", () => {
+    const { testFeelings, testFeelingsUpdate } = makeTestInput();
+    context(`Given no items`, () => {
+      it(`responds with 404`, () => {
+        const feelingId = 123456;
+        return supertest(app)
+          .patch(`/feeling/${feelingId}`)
+          .send(testFeelingsUpdate)
+          .expect(404, {
+            error: { message: `Feeling with that id doesn't exist` }
+          });
+      });
+    });
+
+    context("Given there are rows in the database", () => {
+      beforeEach("insert feelings", () => {
+        return db.into("feeling").insert(testFeelings);
+      });
+
+      it("PATCH /feeling/:id responds with 202 and the updated feeling", () => {
+        const feelingId = 2;
+        return supertest(app)
+          .patch(`/feeling/${feelingId}`)
+          .send(testFeelingsUpdate)
+          .expect(202, testFeelingsUpdate);
+      });
+    });
+  });
+
+  describe("DELETE /feeling/:id", () => {
+    const { testFeelings } = makeTestInput();
+
+    context(`Given no items`, () => {
+      it(`responds with 404`, () => {
+        const feelingId = 123456;
+        return supertest(app)
+          .delete(`/feeling/${feelingId}`)
+          .expect(404, {
+            error: { message: `Feeling with that id doesn't exist` }
+          });
+      });
+    });
+    context("Given there are rows in the database", () => {
+      beforeEach("insert feelings", () => {
+        return db.into("feeling").insert(testFeelings);
+      });
+
+      it("DELETE /feeling/:id responds with 204", () => {
+        const feelingId = 2;
+        return supertest(app)
+          .delete(`/feeling/${feelingId}`)
+          .expect(204);
       });
     });
   });
