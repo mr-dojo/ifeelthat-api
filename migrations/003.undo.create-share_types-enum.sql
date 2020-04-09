@@ -1,0 +1,3 @@
+ALTER TABLE share DROP COLUMN IF EXISTS share_type;
+
+DROP TYPE IF EXISTS share_types;
