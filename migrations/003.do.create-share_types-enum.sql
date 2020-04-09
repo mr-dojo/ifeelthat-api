@@ -1,6 +1,6 @@
 CREATE TYPE share_types AS ENUM (
     'Audio',
-    'Text',
+    'Text'
 );
 
 ALTER TABLE share
