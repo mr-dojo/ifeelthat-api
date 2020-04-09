@@ -8,7 +8,7 @@ feelingRouter
   .route("/")
   .get((req, res, next) => {
     FeelingService.getFeelings(req.app.get("db"))
-      .then(feelings => {
+      .then((feelings) => {
         res.send(200, feelings);
       })
       .catch(next);
@@ -22,7 +22,7 @@ feelingRouter
     }
 
     FeelingService.insertFeeling(req.app.get("db"), newFeeling)
-      .then(createdItem => {
+      .then((createdItem) => {
         res.status(201).json(createdItem);
       })
       .catch(next);
@@ -32,10 +32,10 @@ feelingRouter
   .route("/:id")
   .all((req, res, next) => {
     FeelingService.getFeelingById(req.app.get("db"), req.params.id)
-      .then(feeling => {
+      .then((feeling) => {
         if (!feeling) {
           return res.status(404).json({
-            error: { message: `Feeling with that id doesn't exist` }
+            error: { message: `Feeling with that id doesn't exist` },
           });
         }
         res.feeling = feeling;
@@ -57,13 +57,13 @@ feelingRouter
       req.params.id,
       newFeelingDetails
     )
-      .then(updatedItem => {
+      .then((updatedItem) => {
         res.status(202).send(updatedItem[0]);
       })
       .catch(next);
   })
   .delete(jsonParser, (req, res, next) => {
-    FeelingService.deleteFeeling(req.app.get("db"), req.params.id).then(r => {
+    FeelingService.deleteFeeling(req.app.get("db"), req.params.id).then((r) => {
       res.status(204).end();
     });
   });
