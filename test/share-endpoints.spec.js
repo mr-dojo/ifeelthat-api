@@ -80,86 +80,108 @@ describe("share endpoints", () => {
     });
   });
 
-  // describe(`GET /feeling/:id`, () => {
-  //   context(`Given no items`, () => {
-  //     it(`responds with 404`, () => {
-  //       const feelingId = 123456;
-  //       return supertest(app)
-  //         .get(`/feeling/${feelingId}`)
-  //         .expect(404, {
-  //           error: { message: `Feeling with that id doesn't exist` },
-  //         });
-  //     });
-  //   });
+  describe(`GET /share/:id`, () => {
+    context(`Given no items`, () => {
+      it(`responds with 404`, () => {
+        const shareId = 123456;
+        return supertest(app)
+          .get(`/share/${shareId}`)
+          .expect(404, {
+            error: { message: `Share with that id doesn't exist` },
+          });
+      });
+    });
 
-  //   context("Given there are rows in the database", () => {
-  //     const { testFeelings } = makeTestInput();
+    context("Given there are rows in the database", () => {
+      const { testFeelings } = makeTestInput();
+      const { testShare } = makeTestShareInput();
 
-  //     beforeEach("insert feelings", () => {
-  //       return db.into("feeling").insert(testFeelings);
-  //     });
+      beforeEach("insert items", () => {
+        return Promise.all([
+          db.into("feeling").insert(testFeelings),
+          db.into("share").insert(testShare),
+        ]);
+      });
 
-  //     it("GET /feeling/:id responds with 200 and the specified item", () => {
-  //       const feelingId = 2;
-  //       const expectedItem = testFeelings[feelingId - 1];
-  //       return supertest(app)
-  //         .get(`/feeling/${feelingId}`)
-  //         .expect(200, expectedItem);
-  //     });
-  //   });
-  // });
+      it("GET /share/:id responds with 200 and the specified item", () => {
+        const shareId = 1;
+        const expectedItem = testShare[shareId - 1];
+        return supertest(app)
+          .get(`/share/${shareId}`)
+          .expect(200, expectedItem);
+      });
+    });
+  });
 
-  // describe("PATCH /feelings/:id", () => {
-  //   const { testFeelings, testFeelingsUpdate } = makeTestInput();
-  //   context(`Given no items`, () => {
-  //     it(`responds with 404`, () => {
-  //       const feelingId = 123456;
-  //       return supertest(app)
-  //         .patch(`/feeling/${feelingId}`)
-  //         .send(testFeelingsUpdate)
-  //         .expect(404, {
-  //           error: { message: `Feeling with that id doesn't exist` },
-  //         });
-  //     });
-  //   });
+  describe("PATCH /share/:id", () => {
+    const { testShare, updateTestShareInput } = makeTestShareInput();
+    const { testFeelings } = makeTestInput();
+    context(`Given no items`, () => {
+      it(`responds with 404`, () => {
+        const feelingId = 123456;
+        return supertest(app)
+          .patch(`/feeling/${feelingId}`)
+          .send(updateTestShareInput)
+          .expect(404, {
+            error: { message: `Feeling with that id doesn't exist` },
+          });
+      });
+    });
 
-  //   context("Given there are rows in the database", () => {
-  //     beforeEach("insert feelings", () => {
-  //       return db.into("feeling").insert(testFeelings);
-  //     });
+    context("Given there are rows in the database", () => {
+      beforeEach("insert items", () => {
+        return Promise.all([
+          db.into("feeling").insert(testFeelings),
+          db.into("share").insert(testShare),
+        ]);
+      });
 
-  //     it("PATCH /feeling/:id responds with 202 and the updated feeling", () => {
-  //       const feelingId = 2;
-  //       return supertest(app)
-  //         .patch(`/feeling/${feelingId}`)
-  //         .send(testFeelingsUpdate)
-  //         .expect(202, testFeelingsUpdate);
-  //     });
-  //   });
-  // });
+      it("PATCH /share/:id responds with 400 if not provided any valid update values", () => {
+        const shareId = 1;
+        return supertest(app)
+          .patch(`/share/${shareId}`)
+          .send({})
+          .expect(400, {
+            error: { message: `Invalid input data` },
+          });
+      });
 
-  // describe("DELETE /feeling/:id", () => {
-  //   const { testFeelings } = makeTestInput();
+      it("PATCH /share/:id responds with 202 and the updated share", () => {
+        const shareId = 1;
+        return supertest(app)
+          .patch(`/share/${shareId}`)
+          .send(updateTestShareInput)
+          .expect(202, updateTestShareInput);
+      });
+    });
+  });
 
-  //   context(`Given no items`, () => {
-  //     it(`responds with 404`, () => {
-  //       const feelingId = 123456;
-  //       return supertest(app)
-  //         .delete(`/feeling/${feelingId}`)
-  //         .expect(404, {
-  //           error: { message: `Feeling with that id doesn't exist` },
-  //         });
-  //     });
-  //   });
-  //   context("Given there are rows in the database", () => {
-  //     beforeEach("insert feelings", () => {
-  //       return db.into("feeling").insert(testFeelings);
-  //     });
+  describe("DELETE /share/:id", () => {
+    context(`Given no items`, () => {
+      it(`responds with 404`, () => {
+        const shareId = 123456;
+        return supertest(app)
+          .delete(`/share/${shareId}`)
+          .expect(404, {
+            error: { message: `Share with that id doesn't exist` },
+          });
+      });
+    });
+    context("Given there are rows in the database", () => {
+      const { testFeelings } = makeTestInput();
+      const { testShare } = makeTestShareInput();
 
-  //     it("DELETE /feeling/:id responds with 204", () => {
-  //       const feelingId = 2;
-  //       return supertest(app).delete(`/feeling/${feelingId}`).expect(204);
-  //     });
-  //   });
-  // });
+      beforeEach("insert items", () => {
+        return Promise.all([
+          db.into("feeling").insert(testFeelings),
+          db.into("share").insert(testShare),
+        ]);
+      });
+
+      it("DELETE /share/:id responds with 204", () => {
+        const shareId = 1;
+        return supertest(app).delete(`/share/${shareId}`).expect(204);
+      });
+    });
+  });
 });

@@ -26,7 +26,21 @@ function makeTestShareInput() {
     feeling_id: 1,
     share_type: "Audio",
   };
-  return { testShare, invalidTestShareInput, validTestShareInput };
+
+  const updateTestShareInput = {
+    id: 1,
+    audio_share: "updated string",
+    text_share: null,
+    feeling_id: 1,
+    share_type: "Audio",
+  };
+
+  return {
+    testShare,
+    invalidTestShareInput,
+    validTestShareInput,
+    updateTestShareInput,
+  };
 }
 
 module.exports = {
