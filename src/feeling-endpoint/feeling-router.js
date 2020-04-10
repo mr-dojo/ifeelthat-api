@@ -17,7 +17,10 @@ feelingRouter
     const { emotion, color } = req.body;
     const newFeeling = { emotion, color };
 
-    if (typeof color !== "string" || typeof emotion !== "string") {
+    if (color !== undefined && typeof color !== "string") {
+      return res.status(422).json({ error: { message: `Invalid input data` } });
+    }
+    if (emotion !== undefined && typeof emotion !== "string") {
       return res.status(422).json({ error: { message: `Invalid input data` } });
     }
 

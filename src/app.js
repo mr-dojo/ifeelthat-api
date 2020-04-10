@@ -5,7 +5,6 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const feelingRouter = require("./feeling-endpoint/feeling-router.js");
 const shareRouter = require("./share-endpoint/share-router.js");
-
 const { NODE_ENV, CLIENT_ORIGIN } = require("./config");
 
 const app = express();
