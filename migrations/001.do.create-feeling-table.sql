@@ -9,9 +9,9 @@ CREATE TYPE emotion_options AS ENUM (
   'Anger',
   'Fear',
   'Anxiety',
-  'Excitment',
+  'Excitement',
   'Guilt',
-  'Gratidude'
+  'Gratitude'
   );
 
 ALTER TABLE feeling
