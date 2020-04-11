@@ -13,8 +13,20 @@ ShareRouter.route("/")
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { audio_share, text_share, share_type, feeling_id } = req.body;
-    const newShare = { audio_share, text_share, share_type, feeling_id };
+    const {
+      audio_share,
+      text_share,
+      share_type,
+      feeling_id,
+      emotion,
+    } = req.body;
+    const newShare = {
+      audio_share,
+      text_share,
+      share_type,
+      feeling_id,
+      emotion,
+    };
 
     if (audio_share && typeof audio_share !== "string") {
       return res.status(422).json({ error: { message: `Invalid input data` } });
@@ -36,6 +48,16 @@ ShareRouter.route("/")
       })
       .catch(next);
   });
+
+ShareRouter.route("/find").get((req, res, next) => {
+  const emotion = req.query.emotion;
+  const position = req.query.position;
+  ShareService.getSharesByEmotion(req.app.get("db"), emotion, position)
+    .then((shares) => {
+      res.send(200, shares);
+    })
+    .catch(next);
+});
 
 ShareRouter.route("/:id")
   .all((req, res, next) => {

@@ -5,6 +5,15 @@ const ShareService = {
   getShareById(knexInstance, id) {
     return knexInstance.from("share").select("*").where("id", id).first();
   },
+  getSharesByEmotion(knexInstance, emotion, position) {
+    return knexInstance
+      .from("share")
+      .select("*")
+      .where("emotion", emotion)
+      .andWhere(function () {
+        this.where("id", ">", `${position}`);
+      });
+  },
   insertShare(knexInstance, newShare) {
     return knexInstance
       .insert(newShare)
