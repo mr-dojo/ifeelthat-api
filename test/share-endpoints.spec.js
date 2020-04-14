@@ -184,4 +184,35 @@ describe("share endpoints", () => {
       });
     });
   });
+
+  describe("GET /share/find?emotion=Joy&position=0", () => {
+    context(`Given no items`, () => {
+      it(`responds with 404`, () => {
+        return supertest(app)
+          .get(`/share/find?emotion=Joy&position=0`)
+          .expect(404, {
+            error: {
+              message: `No shares with that emotion/position where found`,
+            },
+          });
+      });
+    });
+    context("Given there are rows in the database", () => {
+      const { testFeelings } = makeTestInput();
+      const { testShare } = makeTestShareInput();
+
+      beforeEach("insert items", () => {
+        return Promise.all([
+          db.into("feeling").insert(testFeelings),
+          db.into("share").insert(testShare),
+        ]);
+      });
+
+      it("GET /share/find?emotion=Joy&position=0 should respond with the first item with the emotion: 'Joy'", () => {
+        return supertest(app)
+          .get(`/share/find?emotion=Joy&position=0`)
+          .expect(200, testShare);
+      });
+    });
+  });
 });
