@@ -5,7 +5,7 @@ const ShareService = {
   getShareById(knexInstance, id) {
     return knexInstance.from("share").select("*").where("id", id).first();
   },
-  getSharesByEmotion(knexInstance, emotion, position) {
+  getSharesByEmotion(knexInstance, emotion, position = 0) {
     return knexInstance
       .from("share")
       .select("*")
