@@ -1,5 +1,6 @@
 const express = require("express");
 const ShareService = require("./share-service");
+const FeelingService = require("../feeling-endpoint/feeling-service");
 
 const ShareRouter = express.Router();
 const jsonParser = express.json();
@@ -61,13 +62,40 @@ ShareRouter.route("/find").get((req, res, next) => {
           },
         });
       }
-      return shares;
-    })
-    .then((shares) => {
-      res.status(200).send(shares);
+      // Get assosiated feeling.color and join with response data
+      getShareColors(req.app.get("db"), shares, (completeShares) => {
+        res.status(200).json(completeShares);
+      });
     })
     .catch(next);
 });
+
+async function getShareColors(db, shares, cb) {
+  const completeShares = [];
+  for (share in shares) {
+    let shareColor;
+    await FeelingService.getFeelingById(db, shares[share].feeling_id)
+      .then((feeling) => {
+        if (!feeling) {
+          return new Error({
+            error: {
+              message: `No feelings with that id where found`,
+            },
+          });
+        }
+        return feeling;
+      })
+      .then((feeling) => {
+        shareColor = feeling.color;
+      })
+      .catch();
+    completeShares.push({
+      ...shares[share],
+      color: shareColor,
+    });
+  }
+  cb(completeShares);
+}
 
 ShareRouter.route("/:id")
   .all((req, res, next) => {
