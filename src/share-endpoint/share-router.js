@@ -52,8 +52,7 @@ ShareRouter.route("/")
 
 ShareRouter.route("/find").get((req, res, next) => {
   const emotion = req.query.emotion;
-  const position = req.query.position;
-  ShareService.getSharesByEmotion(req.app.get("db"), emotion, position)
+  ShareService.getSharesByEmotion(req.app.get("db"), emotion)
     .then((shares) => {
       if (!shares.length) {
         return res.status(404).json({

@@ -5,14 +5,8 @@ const ShareService = {
   getShareById(knexInstance, id) {
     return knexInstance.from("share").select("*").where("id", id).first();
   },
-  getSharesByEmotion(knexInstance, emotion, position = 0) {
-    return knexInstance
-      .from("share")
-      .select("*")
-      .where("emotion", emotion)
-      .andWhere(function () {
-        this.where("id", ">", `${position}`);
-      });
+  getSharesByEmotion(knexInstance, emotion) {
+    return knexInstance.from("share").select("*").where("emotion", emotion);
   },
   insertShare(knexInstance, newShare) {
     return knexInstance
