@@ -14,72 +14,17 @@
 
 - API Repo: [Click Here](https://github.com/mr-dojo/ifeelthat-api)
 
-## How to use it
-
-### Begin by identifying an emotion you are feeling
-
-1. #### from the landing page click "Begin"
-
-![]()
-
-2. #### go through the breath timer
-
-![]()
-
-3. #### select an emotion that you are feeling
-
-![]()
-
-4. #### go through the breath timer again
-
-![]()
-
-5. #### select a color that will represent that emotion
-
-![]()
-
-6. #### If you just want to listen to other people that are feeling the same emotion, click "Listen"
-   #### If you want to express the emotion you are feeling, click "Share"
-
-![]()
-
-### Listen to/Read other people's experiences around the emotion you identified
-
-1. #### If an audio player pops up, click the "Play" arrow
-
-![]()
-
-2. #### Once you are done reading/listening and want to experience another, click "Next"
-
-![]()
-
-3. #### When you are ready to express yourself, click "Share"
-
-![]()
-
-### Share your experience around the emotion you identified with
-
-1. #### Read the guidelines then choose how you want to share, "Text" or "Audio"
-
-![]()
-
-2. #### If you choose "Text", write about that feeling you are experiencing
-   #### If you choose "Audio", follow the instructions on the screen
-
-![]()
-
-3. #### Click "Share" if you want to submit, click "Burn it" if you want to delete it
-
-![]()
-
 ## API endpoints
 
-- ### "GET /feeling"
+- ### List all feelings
 
+  `GET /feeling`
   This returns a list of all feeling objects in the feeling table.
   Returns Json with an emotion and color.
 
-  #### OUTPUT:
+  #### Response
+
+  `Status: 200 Okay`
 
   ```json
   [
@@ -94,17 +39,19 @@
   ]
   ```
 
-- ### "POST /feeling"
+- ### Add new feeling
 
+  `POST /feeling`
   This adds a new feeling object to the feeling table
 
-  #### INPUT:
+  #### Parameters
 
-  The request takes a valid JSON object with:
+  | Name      | Type     | Description                                                                                                                                                                                                                                     |
+  | --------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `emotion` | `string` | A value representing the emotion of the user being one of: `Joy`, `Sadness`, `Anger`, `Fear`, `Anxiety`, `Excitement`, `Guilt`, `Gratitude`, `Contentment`, `Shame`, `Loneliness`,`Pride`, `Power`, `Confusion`, `Nothing`, or `Disappointment` |
+  | `color`   | `string` | A color string with a valid hex color of 6 digits starting with '#'                                                                                                                                                                             |
 
-  1. An emotion string that matches one of following values; "Joy", "Sadness", "Anger", "Fear", "Anxiety", "Excitement", "Guilt", "Gratitude", "Contentment", "Shame", "Loneliness","Pride", "Power", "Confusion", "Nothing", or "Disappointment"
-
-  2. A color string with a valid hex color of 6 digits starting with '#'
+  example:
 
   ```json
   {
@@ -113,7 +60,7 @@
   }
   ```
 
-  #### OUTPUT:
+  #### Response
 
   Returns the newly created feeling object with a unique id
 
