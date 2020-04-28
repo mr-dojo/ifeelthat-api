@@ -86,7 +86,7 @@
 This returns a list of all feeling objects in the feeling table.
 Returns Json with an emotion and color.
 
-OUTPUT:
+#### OUTPUT:
 
 ```json
 [
@@ -104,6 +104,54 @@ OUTPUT:
 ### "POST /feeling"
 
 This adds a new feeling object to the feeling table
+
+#### INPUT:
+
+The input takes a valid JSON object with
+
+1. An emotion string that matches one of following values
+
+```javascript
+[
+  "Joy",
+  "Sadness",
+  "Anger",
+  "Fear",
+  "Anxiety",
+  "Excitement",
+  "Guilt",
+  "Gratitude",
+  "Contentment",
+  "Shame",
+  "Loneliness",
+  "Pride",
+  "Power",
+  "Confusion",
+  "Nothing",
+  "Disappointment",
+];
+```
+
+2. A color string with a valid hex color of 6 digits starting with '#'
+
+```json
+  {
+    "emotion": "Sadness",
+    "color": "#FFFFFF"
+  },
+```
+
+#### OUTPUT:
+
+Returns the newly created feeling object including the id
+
+```json
+  {
+    "id": 123,
+    "emotion": "Sadness",
+    "color": "#FFFFFF"
+  },
+```
 
 ### "GET /feeling/:id"
 
