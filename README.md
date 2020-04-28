@@ -4,7 +4,7 @@
 
 ### This API stores users "feeling" profile and stores/retrives users text and audio posts.
 
-![Begin](./pictures/app_screenshot.JPG)
+![Begin](src/pictures/app_screenshot.JPG)
 
 ## Links
 
