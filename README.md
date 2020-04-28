@@ -20,7 +20,6 @@
 
   `GET /feeling`
   This returns a list of all feeling objects in the feeling table.
-  Returns Json with an emotion and color.
 
   #### Response
 
@@ -62,36 +61,30 @@
 
   #### Response
 
-  Returns the newly created feeling object with a unique id
+  `Status: 201 Created`
 
   ```json
-    {
-      "id": 123,
-      "emotion": "Sadness",
-      "color": "#FFFFFF"
-    },
+  {
+    "id": 123,
+    "emotion": "Sadness",
+    "color": "#FFFFFF"
+  },
   ```
 
-- ### "GET /feeling/:id"
+- ### Find feeling
 
+  `GET /feeling/:feeling_id`
   This returns a feeling object with the associated id from the feeling table
 
-  #### INPUT:
+  #### Parameters
 
-  The request takes valid id as a request param
+  example:
 
-  ```javascript
-  fetch(`https://ifeelthat-api.herokuapp.com/feeling/123`, {
-    method: "GET",
-    headers: {
-      "content-type": "application/json",
-    },
-  });
-  ```
+  `https://ifeelthat-api.herokuapp.com/feeling/123`
 
-  #### OUTPUT:
+  #### Response
 
-  It returns with the feeling object that matches the request param id.
+  `Status: 200 Okay`
 
   ```json
   {
@@ -101,16 +94,20 @@
   }
   ```
 
-- ### "PATCH /feeling/:id"
+- ### Update feeling
 
+  `PATCH /feeling/:feeling_id`
   This updates the feeling with the associated id from the feeling table
 
-  #### INPUT:
+  #### Parameters
 
-  The request takes a valid id as a request param and a request body with a JSON object that has either one or both of:
+  Must have one of the following parameters:
+  | Name | Type | Description |
+  | --------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `emotion` | `string` | A value representing the emotion of the user being one of: `Joy`, `Sadness`, `Anger`, `Fear`, `Anxiety`, `Excitement`, `Guilt`, `Gratitude`, `Contentment`, `Shame`, `Loneliness`,`Pride`, `Power`, `Confusion`, `Nothing`, or `Disappointment` |
+  | `color` | `string` | A color string with a valid hex color of 6 digits starting with '#' |
 
-  - An emotion string that matches one of following values; "Joy", "Sadness", "Anger", "Fear", "Anxiety", "Excitement", "Guilt", "Gratitude", "Contentment", "Shame", "Loneliness","Pride", "Power", "Confusion", "Nothing", or "Disappointment"
-  - A color string with a valid hex color of 6 digits starting with '#'
+  example:
 
   ```javascript
   fetch(`https://ifeelthat-api.herokuapp.com/feeling/123`, {
@@ -124,9 +121,7 @@
   });
   ```
 
-  #### OUTPUT:
-
-  It returns with the updated feeling object.
+  #### Response
 
   ```json
   {
@@ -136,32 +131,26 @@
   }
   ```
 
-- ### "DELETE /feeling/:id"
+- ### Delete feeling
 
+  `DELETE /feeling/:feeling_id`
   This deletes the feeling with the associated id from the feeling table
 
-  #### INPUT:
+  example:
+  `https://ifeelthat-api.herokuapp.com/feeling/123`
 
-  The request takes a valid id as a request param.
+  #### Response
 
-  ```javascript
-  fetch(`https://ifeelthat-api.herokuapp.com/feeling/123`, {
-    method: "DELETE",
-    headers: {
-      "content-type": "application/json",
-    },
-  });
-  ```
+  `Status: 204 No Content`
 
-  #### OUTPUT:
+- ### List all shares
 
-  It returns a status of "204" and no content.
+  `GET /share`
+  Returns a list of all the share objects in the share table
 
-- ### "GET /share"
+  #### Response
 
-  This returns a list of all the share objects in the share table.
-
-  #### OUTPUT:
+  `Status: 200 Okay`
 
   ```json
   [
@@ -184,23 +173,22 @@
   ]
   ```
 
-- ### "POST /share"
+- ### Add new share
 
+  `POST /share`
   This adds a new share object to the share table.
 
-  #### INPUT:
+  #### Parameters
 
-  The request takes a valid JSON object with:
+  | Name          | Type     | Description                                                                                                                                                                                                                                                |
+  | ------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `emotion`     | `string` | Value representing the emotion of the user being one of: `Joy`, `Sadness`, `Anger`, `Fear`, `Anxiety`, `Excitement`, `Guilt`, `Gratitude`, `Contentment`, `Shame`, `Loneliness`,`Pride`, `Power`, `Confusion`, `Nothing`, or `Disappointment` **Required** |
+  | `audio_share` | `string` | Url with a direct link to a soundcloud audio file. One of either `audio_share` or `text_share` is **Required**.                                                                                                                                            |
+  | `text_share`  | `string` | String from a user, talking about their experiences and emotions. One of either `audio_share` or `text_share` is **Required**.                                                                                                                             |
+  | `share_type`  | `string` | Type of share that the user has chosen being one of: `Text` or `Audio` **Required**                                                                                                                                                                        |
+  | `feeling_id`  | `int`    | An id that matches an existing feeling's id **Required**                                                                                                                                                                                                   |
 
-  1. Either: (one is required)
-
-  - An "audio_share" string with a direct link to a soundcloud audio file.
-
-  - A "text_share" string.
-
-  2. A "share_type" string of either "Audio" or "Text" (required)
-  3. An emotion string that matches one of following values: "Joy", "Sadness", "Anger", "Fear", "Anxiety", "Excitement", "Guilt", "Gratitude", "Contentment", "Shame", "Loneliness","Pride", "Power", "Confusion", "Nothing", or "Disappointment" (required)
-  4. A "feeling_id" int that matches an existing feeling id (required)
+  example:
 
   ```json
   {
@@ -211,9 +199,9 @@
   }
   ```
 
-  #### OUTPUT:
+  #### Response
 
-  Returns the newly created share object with a unique id
+  `Status: 201 Created`
 
   ```json
   {
