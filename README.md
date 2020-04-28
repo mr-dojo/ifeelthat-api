@@ -1,10 +1,10 @@
 # Listen/Share API
 
-## Back end API for the Listen/Share app
+## API for the Listen/Share app
 
 ### This API stores users "feeling" profile and stores/retrives users text and audio posts.
 
-### Links
+## Links
 
 - Live App: [Click Here](https://ifeelthat-app.now.sh/)
 
@@ -288,13 +288,13 @@
 
   One is **Required**:
 
-  | Name          | Type     | Description                                                                                                                                                                                                                                                |
-  | ------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `emotion`     | `string` | Value representing the emotion of the user being one of: `Joy`, `Sadness`, `Anger`, `Fear`, `Anxiety`, `Excitement`, `Guilt`, `Gratitude`, `Contentment`, `Shame`, `Loneliness`,`Pride`, `Power`, `Confusion`, `Nothing`, or `Disappointment` **Required** |
-  | `audio_share` | `string` | Url with a direct link to a soundcloud audio file                                                                                                                                                                                                          |
-  | `text_share`  | `string` | String from a user, talking about their experiences and emotions                                                                                                                                                                                           |
-  | `share_type`  | `string` | Type of share that the user has chosen being one of: `Text` or `Audio`                                                                                                                                                                                     |
-  | `feeling_id`  | `int`    | An id that matches an existing feeling's id                                                                                                                                                                                                                |
+  | Name          | Type     | Description                                                                                                                                                                                                                                   |
+  | ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `emotion`     | `string` | Value representing the emotion of the user being one of: `Joy`, `Sadness`, `Anger`, `Fear`, `Anxiety`, `Excitement`, `Guilt`, `Gratitude`, `Contentment`, `Shame`, `Loneliness`,`Pride`, `Power`, `Confusion`, `Nothing`, or `Disappointment` |
+  | `audio_share` | `string` | Url with a direct link to a soundcloud audio file                                                                                                                                                                                             |
+  | `text_share`  | `string` | String from a user, talking about their experiences and emotions                                                                                                                                                                              |
+  | `share_type`  | `string` | Type of share that the user has chosen being one of: `Text` or `Audio`                                                                                                                                                                        |
+  | `feeling_id`  | `int`    | An id that matches an existing feeling's id                                                                                                                                                                                                   |
 
   example:
 
@@ -355,7 +355,7 @@
 - "/listen" listen and read other peoples experiences around the emotion you identified with
 - "/share" share your experience around the emotion you identified with
 
-### Technologies used
+## Technologies used
 
 This RESTful API was written in Javascript using Node.js with Express.
 The database uses PostgreSQL.
