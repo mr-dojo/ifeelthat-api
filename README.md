@@ -132,8 +132,6 @@
     },
   ```
 
-````
-
 - ### "GET /feeling/:id"
 
   This returns a feeling object with the associated id from the feeling table
@@ -149,19 +147,19 @@
       "content-type": "application/json",
     },
   });
-````
+  ```
 
-#### OUTPUT:
+  #### OUTPUT:
 
-It returns with the feeling object that matches the request param id.
+  It returns with the feeling object that matches the request param id.
 
-```json
-{
-  "id": 123,
-  "emotion": "Sadness",
-  "color": "#FFFFFF"
-}
-```
+  ```json
+  {
+    "id": 123,
+    "emotion": "Sadness",
+    "color": "#FFFFFF"
+  }
+  ```
 
 - ### "PATCH /feeling/:id"
 
@@ -304,3 +302,7 @@ This client side app is written in: HTML5, CSS3, Javascript ES6, and JSX.
 I used React as a framework and Jest for testing.
 The RESTful API was written in Javascript using Node.js with Express.
 The database uses PostgreSQL.
+
+```
+
+```
