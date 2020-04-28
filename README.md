@@ -88,18 +88,18 @@
 
   #### OUTPUT:
 
-```json
-[
-  {
-    "emotion": "Sadness",
-    "color": "#FFFFFF"
-  },
-  {
-    "emotion": "Anger",
-    "color": "#000000"
-  }
-]
-```
+  ```json
+  [
+    {
+      "emotion": "Sadness",
+      "color": "#FFFFFF"
+    },
+    {
+      "emotion": "Anger",
+      "color": "#000000"
+    }
+  ]
+  ```
 
 - ### "POST /feeling"
 
@@ -122,15 +122,17 @@
 
   #### OUTPUT:
 
-Returns the newly created feeling object with a unique id
+  Returns the newly created feeling object with a unique id
 
-```json
-  {
-    "id": 123,
-    "emotion": "Sadness",
-    "color": "#FFFFFF"
-  },
-```
+  ```json
+    {
+      "id": 123,
+      "emotion": "Sadness",
+      "color": "#FFFFFF"
+    },
+  ```
+
+````
 
 - ### "GET /feeling/:id"
 
@@ -147,9 +149,9 @@ Returns the newly created feeling object with a unique id
       "content-type": "application/json",
     },
   });
-  ```
+````
 
-  #### OUTPUT:
+#### OUTPUT:
 
 It returns with the feeling object that matches the request param id.
 
@@ -186,15 +188,15 @@ It returns with the feeling object that matches the request param id.
 
   #### OUTPUT:
 
-It returns with the updated feeling object.
+  It returns with the updated feeling object.
 
-```json
-{
-  "id": 123,
-  "emotion": "Sadness",
-  "color": "#2C1E1E"
-}
-```
+  ```json
+  {
+    "id": 123,
+    "emotion": "Sadness",
+    "color": "#2C1E1E"
+  }
+  ```
 
 - ### "DELETE /feeling/:id"
 
