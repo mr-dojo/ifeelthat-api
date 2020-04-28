@@ -81,7 +81,7 @@
 
 ## API endpoints
 
-### "GET /feeling"
+- ### "GET /feeling"
 
 This returns a list of all feeling objects in the feeling table.
 Returns Json with an emotion and color.
@@ -101,7 +101,7 @@ Returns Json with an emotion and color.
 ]
 ```
 
-### "POST /feeling"
+- ### "POST /feeling"
 
 This adds a new feeling object to the feeling table
 
@@ -132,7 +132,7 @@ Returns the newly created feeling object with a unique id
   },
 ```
 
-### "GET /feeling/:id"
+- ### "GET /feeling/:id"
 
 This returns a feeling object with the associated id from the feeling table
 
@@ -161,7 +161,7 @@ It returns with the feeling object that matches the request param id.
 }
 ```
 
-### "PATCH /feeling/:id"
+- ### "PATCH /feeling/:id"
 
 This updates the feeling with the associated id from the feeling table
 
@@ -196,7 +196,7 @@ It returns with the updated feeling object.
 }
 ```
 
-### "DELETE /feeling/:id"
+- ### "DELETE /feeling/:id"
 
 This deletes the feeling with the associated id from the feeling table
 
@@ -217,7 +217,7 @@ fetch(`https://ifeelthat-api.herokuapp.com/feeling/123`, {
 
 It returns a status of "204" and no content.
 
-### "GET /share"
+- ### "GET /share"
 
 This returns a list of all the share objects in the share table.
 
@@ -244,7 +244,7 @@ This returns a list of all the share objects in the share table.
 ]
 ```
 
-### "POST /share"
+- ### "POST /share"
 
 This adds a new share object to the share table.
 
@@ -286,11 +286,15 @@ Returns the newly created share object with a unique id
 }
 ```
 
-- "GET /share/find?emotion=Anger&position=0" returns with all the share objects in the share table
+- ### "GET /share/find?emotion=Anger&position=0"
+  returns with all the share objects in the share table
   that match the "emotion" query param starting at the "position" array index along with its coorisponding color
-- "GET /share/:id" returns the share with the associated id from the share table
-- "PATCH /share/:id" updates the share with the associated id from the share table
-- "DELETE /share/:id" deletes the share with the associated id from the share table
+- ### "GET /share/:id"
+  returns the share with the associated id from the share table
+- ### "PATCH /share/:id"
+  updates the share with the associated id from the share table
+- ### "DELETE /share/:id"
+  deletes the share with the associated id from the share table
 
 ### Technologies used
 
