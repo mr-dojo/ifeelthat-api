@@ -4,6 +4,8 @@
 
 ### This API stores users "feeling" profile and stores/retrives users text and audio posts.
 
+![Begin](./pictures/app_screenshot.JPG)
+
 ## Links
 
 - Live App: [Click Here](https://ifeelthat-app.now.sh/)
