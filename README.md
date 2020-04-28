@@ -109,28 +109,7 @@ This adds a new feeling object to the feeling table
 
 The input takes a valid JSON object with
 
-1. An emotion string that matches one of following values
-
-```javascript
-[
-  "Joy",
-  "Sadness",
-  "Anger",
-  "Fear",
-  "Anxiety",
-  "Excitement",
-  "Guilt",
-  "Gratitude",
-  "Contentment",
-  "Shame",
-  "Loneliness",
-  "Pride",
-  "Power",
-  "Confusion",
-  "Nothing",
-  "Disappointment",
-];
-```
+1. An emotion string that matches one of following values; "Joy", "Sadness", "Anger", "Fear", "Anxiety", "Excitement", "Guilt", "Gratitude", "Contentment", "Shame", "Loneliness","Pride", "Power", "Confusion", "Nothing", or "Disappointment"
 
 2. A color string with a valid hex color of 6 digits starting with '#'
 
@@ -143,7 +122,7 @@ The input takes a valid JSON object with
 
 #### OUTPUT:
 
-Returns the newly created feeling object including the id
+Returns the newly created feeling object with a unique id
 
 ```json
   {
@@ -155,7 +134,44 @@ Returns the newly created feeling object including the id
 
 ### "GET /feeling/:id"
 
-returns a feeling object with the associated id from the feeling table
+This returns a feeling object with the associated id from the feeling table
+
+#### INPUT:
+
+The input takes valid id as a request param
+
+```javascript
+fetch(`https://ifeelthat-api.herokuapp.com/feeling/123`, {
+  method: "GET",
+  headers: {
+    "content-type": "application/json",
+  },
+});
+```
+
+#### OUTPUT:
+
+It returns with the feeling object that matches the request param id.
+
+```json
+  {
+    "id": 123,
+    "emotion": "Sadness",
+    "color": "#FFFFFF"
+  },
+```
+
+#### OUTPUT:
+
+Returns the newly created feeling object with a unique id
+
+```json
+  {
+    "id": 123,
+    "emotion": "Sadness",
+    "color": "#FFFFFF"
+  },
+```
 
 - "PATCH /feeling/:id" updates the feeling with the associated id from the feeling table
 - "DELETE /feeling/:id" deletes the feeling with the associated id from the feeling table
