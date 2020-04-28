@@ -48,7 +48,7 @@
   | Name      | Type     | Description                                                                                                                                                                                                                                     |
   | --------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `emotion` | `string` | A value representing the emotion of the user being one of: `Joy`, `Sadness`, `Anger`, `Fear`, `Anxiety`, `Excitement`, `Guilt`, `Gratitude`, `Contentment`, `Shame`, `Loneliness`,`Pride`, `Power`, `Confusion`, `Nothing`, or `Disappointment` |
-  | `color`   | `string` | A color string with a valid hex color of 6 digits starting with '#'                                                                                                                                                                             |
+  | `color`   | `string` | Valid hex color of 6 digits starting with '#'                                                                                                                                                                                                   |
 
   example:
 
@@ -105,7 +105,7 @@
   | Name | Type | Description |
   | --------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `emotion` | `string` | A value representing the emotion of the user being one of: `Joy`, `Sadness`, `Anger`, `Fear`, `Anxiety`, `Excitement`, `Guilt`, `Gratitude`, `Contentment`, `Shame`, `Loneliness`,`Pride`, `Power`, `Confusion`, `Nothing`, or `Disappointment` |
-  | `color` | `string` | A color string with a valid hex color of 6 digits starting with '#' |
+  | `color` | `string` | Valid hex color of 6 digits starting with '#' |
 
   example:
 
@@ -214,28 +214,24 @@
   }
   ```
 
-- ### "GET /share/find?emotion=[emotion]"
+- ### Find all shares by emotion
 
+  `GET /share/find?emotion`
   returns with all the share objects in the share table
   that match the "emotion" query param along with its coorisponding color
 
-  #### INPUT:
+  #### Parameters
 
-  The request requires a query param called "emotion".
-  This is a string that matches one of following values; "Joy", "Sadness", "Anger", "Fear", "Anxiety", "Excitement", "Guilt", "Gratitude", "Contentment", "Shame", "Loneliness","Pride", "Power", "Confusion", "Nothing", or "Disappointment"
+  example:
+  `GET /share/find?emotion=Confusion`
 
-  ```javascript
-  fetch(`https://ifeelthat-api.herokuapp.com/share/find?emotion=Confusion`, {
-    method: "GET",
-    headers: {
-      "content-type": "application/json",
-    },
-  });
-  ```
+  The request requires a query param called `emotion` that matches one of following values: `Joy`, `Sadness`, `Anger`, `Fear`, `Anxiety`, `Excitement`, `Guilt`, `Gratitude`, `Contentment`, `Shame`, `Loneliness`,`Pride`, `Power`, `Confusion`, `Nothing`, or `Disappointment`
 
-  #### OUTPUT:
+  #### Response
 
-  It returns with an array of share objects that match the query param "emotion" as well as the color of the feeling at the forign key "feeling_id".
+  `Status: 200 Okay`
+
+  Responds with all shares that match the query param and gives each the `color` from the coorisponding feeling
 
   ```json
   [
@@ -260,26 +256,17 @@
   ]
   ```
 
-- ### "GET /share/:id"
+- ### Find share
 
+  `GET /share/:share_id`
   This returns the share with the associated id from the share table.
-
-  #### INPUT:
 
   The request takes valid id as a request param
 
-  ```javascript
-  fetch(`https://ifeelthat-api.herokuapp.com/share/23`, {
-    method: "GET",
-    headers: {
-      "content-type": "application/json",
-    },
-  });
-  ```
+  example:
+  `https://ifeelthat-api.herokuapp.com/share/23`
 
-  #### OUTPUT:
-
-  It returns with the share object that matches the request param id.
+  #### Response
 
   ```json
     {
@@ -292,18 +279,24 @@
     },
   ```
 
-- ### "PATCH /share/:id"
+- ### Update share
 
+  `PATCH /share/:share_id`
   This updates the share with the associated id from the share table.
 
-  #### INPUT:
+  #### Parameters
 
-  The request takes a valid id as a request param and a request body with a JSON object that has one or all of:
+  One is **Required**:
 
-  - An "audio_share" string with a direct link to a soundcloud audio file.
-  - A "text_share" string.
-  - A "share_type" string matching either "Audio" or "Text".
-  - A "feeling_id" int matching an existing feeling object.
+  | Name          | Type     | Description                                                                                                                                                                                                                                                |
+  | ------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `emotion`     | `string` | Value representing the emotion of the user being one of: `Joy`, `Sadness`, `Anger`, `Fear`, `Anxiety`, `Excitement`, `Guilt`, `Gratitude`, `Contentment`, `Shame`, `Loneliness`,`Pride`, `Power`, `Confusion`, `Nothing`, or `Disappointment` **Required** |
+  | `audio_share` | `string` | Url with a direct link to a soundcloud audio file                                                                                                                                                                                                          |
+  | `text_share`  | `string` | String from a user, talking about their experiences and emotions                                                                                                                                                                                           |
+  | `share_type`  | `string` | Type of share that the user has chosen being one of: `Text` or `Audio`                                                                                                                                                                                     |
+  | `feeling_id`  | `int`    | An id that matches an existing feeling's id                                                                                                                                                                                                                |
+
+  example:
 
   ```javascript
   fetch(`https://ifeelthat-api.herokuapp.com/share/23`, {
@@ -318,9 +311,9 @@
   });
   ```
 
-  #### OUTPUT:
+  #### Response
 
-  It returns with the updated share object.
+  `Status: 202 Updated`
 
   ```json
     {
@@ -333,13 +326,14 @@
     },
   ```
 
-- ### "DELETE /share/:id"
+- ### Delete share
 
+  `DELETE /share/:share_id`
   This deletes the share with the associated id from the share table
 
-  #### INPUT:
-
   The request takes a valid id as a request param.
+
+  example:
 
   ```javascript
   fetch(`https://ifeelthat-api.herokuapp.com/share/23`, {
@@ -350,9 +344,9 @@
   });
   ```
 
-  #### OUTPUT:
+  #### Response
 
-  It returns a status of "204" and no content.
+  `Status 204 No Content`
 
 ## Client Endpoints
 
