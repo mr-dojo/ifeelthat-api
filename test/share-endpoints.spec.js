@@ -190,11 +190,7 @@ describe("share endpoints", () => {
       it(`responds with 404`, () => {
         return supertest(app)
           .get(`/share/find?emotion=Joy&position=0`)
-          .expect(404, {
-            error: {
-              message: `No shares with that emotion/position where found`,
-            },
-          });
+          .expect(204);
       });
     });
     context("Given there are rows in the database", () => {

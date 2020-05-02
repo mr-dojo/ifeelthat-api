@@ -55,11 +55,7 @@ ShareRouter.route("/find").get((req, res, next) => {
   ShareService.getSharesByEmotion(req.app.get("db"), emotion)
     .then((shares) => {
       if (!shares.length) {
-        return res.status(404).json({
-          error: {
-            message: `No shares with that emotion/position where found`,
-          },
-        });
+        return res.status(204).json();
       }
       // Get assosiated feeling.color and join with response data
       getShareColors(req.app.get("db"), shares, (completeShares) => {
