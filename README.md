@@ -350,6 +350,18 @@
 
   `Status 204 No Content`
 
+## Database Seeding Scripts
+
+### For the local database:
+
+- First insert items into "feeling" table: `psql -U carlo -d ifeelthat -f ./seeds/seed.ifeelthat-feeling-table.sql`
+- Then insert items into "share" table: `psql -U carlo -d ifeelthat -f ./seeds/seed.ifeelthat-share-table.sql`
+
+### For the test database:
+
+- First insert items into test "feeling" table: `psql -U carlo -d ifeelthattest -f ./seeds/seed.ifeelthat-feeling-table.sql`
+- Then insert items into test "share" table: `psql -U carlo -d ifeelthattest -f ./seeds/seed.ifeelthat-share-table.sql`
+
 ## Client Endpoints
 
 - "/" landing page that describes the app, its purpuse, and how to use it

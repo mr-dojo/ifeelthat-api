@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS pending;
+DROP TABLE IF EXISTS archive;
