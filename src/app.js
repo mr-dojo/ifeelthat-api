@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const feelingRouter = require("./feeling-endpoint/feeling-router.js");
 const shareRouter = require("./share-endpoint/share-router.js");
+const pendingRouter = require("./pending-endpoint/pending-router.js");
 const { NODE_ENV, CLIENT_ORIGIN } = require("./config");
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(
 );
 app.use("/feeling", feelingRouter);
 app.use("/share", shareRouter);
+app.use("/pending", pendingRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;
