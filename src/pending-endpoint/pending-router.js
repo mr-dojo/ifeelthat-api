@@ -1,5 +1,7 @@
 const express = require("express");
 const PendingService = require("./pending-service");
+const ShareService = require("../share-endpoint/share-service");
+const { buildShareFromRequest } = require("../helper-functions");
 
 const PendingRouter = express.Router();
 const jsonParser = express.json();
@@ -13,36 +15,30 @@ PendingRouter.route("/")
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const {
-      audio_share,
-      text_share,
-      share_type,
-      feeling_id,
-      emotion,
-    } = req.body;
-    const newPendingShare = {
-      audio_share,
-      text_share,
-      share_type,
-      feeling_id,
-      emotion,
-    };
+    const pendingShare = buildShareFromRequest(req.body);
 
-    if (audio_share && typeof audio_share !== "string") {
+    if (
+      pendingShare.audio_share &&
+      typeof pendingShare.audio_share !== "string"
+    ) {
       return res.status(422).json({ error: { message: `Invalid input data` } });
     }
-    if (text_share && typeof text_share !== "string") {
+    if (
+      pendingShare.text_share &&
+      typeof pendingShare.text_share !== "string"
+    ) {
       return res.status(422).json({ error: { message: `Invalid input data` } });
     }
-    if (share_type !== "Audio" && share_type !== "Text") {
+    if (
+      pendingShare.share_type !== "Audio" &&
+      pendingShare.share_type !== "Text"
+    ) {
       return res.status(422).json({
         error: { message: `share_type must be either "Audio" or "Text"` },
       });
     }
 
-    // FUTURE: impliment if checker for feeling_id
-
-    PendingService.insertPending(req.app.get("db"), newPendingShare)
+    PendingService.insertPending(req.app.get("db"), pendingShare)
       .then((createdItem) => {
         res.status(201).json(createdItem);
       })
@@ -64,6 +60,44 @@ PendingRouter.route("/:id")
       .catch(next);
   })
   .get((req, res, next) => res.status(200).json(res.pendingShare))
+  .patch(jsonParser, async (req, res, next) => {
+    const status = req.query.status;
+
+    if (status != "accept" && status != "deny") {
+      res
+        .status(422)
+        .json({
+          error: {
+            message:
+              "Request requires query parameter 'status' of either 'accept' or 'deny'",
+          },
+        })
+        .end();
+    } else {
+      if (status === "accept") {
+        await ShareService.insertShare(
+          req.app.get("db"),
+          res.pendingShare
+        ).catch(next);
+      }
+
+      if (status === "deny") {
+        //*write code here*
+      }
+
+      await PendingService.deletePendingById(
+        req.app.get("db"),
+        req.params.id
+      ).catch(next);
+
+      // Send all remaining pending shares
+      await PendingService.getAllPending(req.app.get("db"))
+        .then((pendingShares) => {
+          res.status(201).send(pendingShares);
+        })
+        .catch(next);
+    }
+  })
   .delete(jsonParser, (req, res, next) => {
     PendingService.deletePendingById(req.app.get("db"), req.params.id).then(
       (r) => {
