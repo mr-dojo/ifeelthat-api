@@ -1,4 +1,4 @@
-const buildShareFromReq = (body) => {
+const buildShareFromRequest = (body) => {
   const { audio_share, text_share, share_type, feeling_id, emotion } = body;
   const newPendingShare = {
     audio_share,
@@ -13,4 +13,4 @@ const buildShareFromReq = (body) => {
   return newPendingShare;
 };
 
-module.exports = { buildShareFromReq };
+module.exports = { buildShareFromRequest };
