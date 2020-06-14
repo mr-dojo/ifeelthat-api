@@ -352,12 +352,12 @@
 
 ## Database Seeding Scripts
 
-### For the local database:
+### Seed database:
 
 - First insert items into "feeling" table: `psql -U carlo -d ifeelthat -f ./seeds/seed.ifeelthat-feeling-table.sql`
 - Then insert items into "share" table: `psql -U carlo -d ifeelthat -f ./seeds/seed.ifeelthat-share-table.sql`
 
-### For the test database:
+### Seed test database:
 
 - First insert items into test "feeling" table: `psql -U carlo -d ifeelthattest -f ./seeds/seed.ifeelthat-feeling-table.sql`
 - Then insert items into test "share" table: `psql -U carlo -d ifeelthattest -f ./seeds/seed.ifeelthat-share-table.sql`
