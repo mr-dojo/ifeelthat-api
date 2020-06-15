@@ -1,6 +1,7 @@
 const express = require("express");
 const PendingService = require("./pending-service");
 const ShareService = require("../share-endpoint/share-service");
+const ArchiveService = require("../archive-endpoint/archive-service");
 const { buildShareFromRequest } = require("../helper-functions");
 
 const PendingRouter = express.Router();
@@ -82,7 +83,10 @@ PendingRouter.route("/:id")
       }
 
       if (status === "deny") {
-        //*write code here*
+        await ArchiveService.insertArchived(
+          req.app.get("db"),
+          res.pendingShare
+        ).catch(next);
       }
 
       await PendingService.deletePendingById(
