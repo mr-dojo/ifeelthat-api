@@ -11,7 +11,7 @@ PendingRouter.route("/")
   .get((req, res, next) => {
     PendingService.getAllPending(req.app.get("db"))
       .then((pendingShares) => {
-        res.send(200, pendingShares);
+        res.status(200).send(pendingShares);
       })
       .catch(next);
   })
@@ -75,7 +75,10 @@ PendingRouter.route("/:id")
         })
         .end();
     } else {
+      // remove the id from the pending share before inserting into new table to avoid conflict with duplicate id's
+      delete res.pendingShare.id;
       if (status === "accept") {
+        // Insert pending share to "share" table
         await ShareService.insertShare(
           req.app.get("db"),
           res.pendingShare
@@ -83,12 +86,14 @@ PendingRouter.route("/:id")
       }
 
       if (status === "deny") {
+        // Insert pending share to "archive" table
         await ArchiveService.insertArchived(
           req.app.get("db"),
           res.pendingShare
         ).catch(next);
       }
 
+      // Delete pending share from "pending" table
       await PendingService.deletePendingById(
         req.app.get("db"),
         req.params.id
