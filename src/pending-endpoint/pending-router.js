@@ -75,29 +75,47 @@ PendingRouter.route("/:id")
         })
         .end();
     } else {
-      // remove the id from the pending share before inserting into new table to avoid conflict with duplicate id's
+      // Remove the id from the pending share before inserting into new table to avoid conflict with duplicate id's
       delete res.pendingShare.id;
       if (status === "accept") {
         // Insert pending share to "share" table
-        await ShareService.insertShare(
-          req.app.get("db"),
-          res.pendingShare
-        ).catch(next);
+        await ShareService.insertShare(req.app.get("db"), res.pendingShare)
+          .then(async (share) => {
+            console.log("delete pending share ran");
+            if (share) {
+              // Delete pending share from "pending" table
+              await PendingService.deletePendingById(
+                req.app.get("db"),
+                req.params.id
+              ).catch(next);
+            } else {
+              throw new Error({
+                error: { message: "ArchiveService.insertArchived failed" },
+              });
+            }
+          })
+          .catch(next);
       }
 
       if (status === "deny") {
         // Insert pending share to "archive" table
-        await ArchiveService.insertArchived(
-          req.app.get("db"),
-          res.pendingShare
-        ).catch(next);
+        await ArchiveService.insertArchived(req.app.get("db"), res.pendingShare)
+          .then(async (share) => {
+            console.log("delete pending share ran");
+            if (share) {
+              // Delete pending share from "pending" table
+              await PendingService.deletePendingById(
+                req.app.get("db"),
+                req.params.id
+              ).catch(next);
+            } else {
+              throw new Error({
+                error: { message: "ArchiveService.insertArchived failed" },
+              });
+            }
+          })
+          .catch(next);
       }
-
-      // Delete pending share from "pending" table
-      await PendingService.deletePendingById(
-        req.app.get("db"),
-        req.params.id
-      ).catch(next);
 
       // Send all remaining pending shares
       await PendingService.getAllPending(req.app.get("db"))
