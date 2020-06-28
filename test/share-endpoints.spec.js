@@ -110,12 +110,12 @@ describe("share endpoints", () => {
     const { testFeelings } = makeTestInput();
     context(`Given no items`, () => {
       it(`responds with 404`, () => {
-        const feelingId = 123456;
+        const shareId = 123456;
         return supertest(app)
-          .patch(`/feeling/${feelingId}`)
+          .patch(`/share/${shareId}`)
           .send(updateTestShareInput)
           .expect(404, {
-            error: { message: `Feeling with that id doesn't exist` },
+            error: { message: `Share with that id doesn't exist` },
           });
       });
     });
