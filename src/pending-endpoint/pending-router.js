@@ -120,7 +120,7 @@ PendingRouter.route("/:id")
       // Send all remaining pending shares
       await PendingService.getAllPending(req.app.get("db"))
         .then((pendingShares) => {
-          res.status(201).send(pendingShares);
+          res.status(200).send(pendingShares);
         })
         .catch(next);
     }
