@@ -16,18 +16,14 @@ describe("share endpoints", () => {
 
   after("disconnect from db", () => db.destroy());
 
-  before("clean the table", () => {
-    return Promise.all([
-      db.raw(`TRUNCATE TABLE share RESTART IDENTITY CASCADE`),
-      db.raw(`TRUNCATE TABLE feeling RESTART IDENTITY CASCADE`),
-    ]);
+  before("clean the table", async () => {
+    await db.raw(`TRUNCATE TABLE share RESTART IDENTITY CASCADE`);
+    await db.raw(`TRUNCATE TABLE feeling RESTART IDENTITY CASCADE`);
   });
 
-  afterEach("cleanup", () => {
-    return Promise.all([
-      db.raw(`TRUNCATE TABLE share RESTART IDENTITY CASCADE`),
-      db.raw(`TRUNCATE TABLE feeling RESTART IDENTITY CASCADE`),
-    ]);
+  afterEach("cleanup", async () => {
+    await db.raw(`TRUNCATE TABLE share RESTART IDENTITY CASCADE`);
+    await db.raw(`TRUNCATE TABLE feeling RESTART IDENTITY CASCADE`);
   });
 
   describe("GET /share", () => {
@@ -41,11 +37,9 @@ describe("share endpoints", () => {
       const { testFeelings } = makeTestInput();
       const { testShare } = makeTestShareInput();
 
-      beforeEach("insert items", () => {
-        return Promise.all([
-          db.into("feeling").insert(testFeelings),
-          db.into("share").insert(testShare),
-        ]);
+      beforeEach("insert items", async () => {
+        await db.into("feeling").insert(testFeelings);
+        await db.into("share").insert(testShare);
       });
 
       it("GET /share respondes with 200 and an array of share objects", () => {
@@ -96,11 +90,9 @@ describe("share endpoints", () => {
       const { testFeelings } = makeTestInput();
       const { testShare } = makeTestShareInput();
 
-      beforeEach("insert items", () => {
-        return Promise.all([
-          db.into("feeling").insert(testFeelings),
-          db.into("share").insert(testShare),
-        ]);
+      beforeEach("insert items", async () => {
+        await db.into("feeling").insert(testFeelings);
+        await db.into("share").insert(testShare);
       });
 
       it("GET /share/:id responds with 200 and the specified item", () => {
@@ -129,11 +121,9 @@ describe("share endpoints", () => {
     });
 
     context("Given there are rows in the database", () => {
-      beforeEach("insert items", () => {
-        return Promise.all([
-          db.into("feeling").insert(testFeelings),
-          db.into("share").insert(testShare),
-        ]);
+      beforeEach("insert items", async () => {
+        await db.into("feeling").insert(testFeelings);
+        await db.into("share").insert(testShare);
       });
 
       it("PATCH /share/:id responds with 400 if not provided any valid update values", () => {
@@ -171,11 +161,9 @@ describe("share endpoints", () => {
       const { testFeelings } = makeTestInput();
       const { testShare } = makeTestShareInput();
 
-      beforeEach("insert items", () => {
-        return Promise.all([
-          db.into("feeling").insert(testFeelings),
-          db.into("share").insert(testShare),
-        ]);
+      beforeEach("insert items", async () => {
+        await db.into("feeling").insert(testFeelings);
+        await db.into("share").insert(testShare);
       });
 
       it("DELETE /share/:id responds with 204", () => {
@@ -196,18 +184,27 @@ describe("share endpoints", () => {
     context("Given there are rows in the database", () => {
       const { testFeelings } = makeTestInput();
       const { testShare } = makeTestShareInput();
+      const testShareWithColor = [
+        {
+          id: 1,
+          audio_share: "testURLstring",
+          text_share: null,
+          emotion: "Joy",
+          color: "Blue",
+          feeling_id: 1,
+          share_type: "Audio",
+        },
+      ];
 
-      beforeEach("insert items", () => {
-        return Promise.all([
-          db.into("feeling").insert(testFeelings),
-          db.into("share").insert(testShare),
-        ]);
+      beforeEach("insert items", async () => {
+        await db.into("feeling").insert(testFeelings);
+        await db.into("share").insert(testShare);
       });
 
       it("GET /share/find?emotion=Joy&position=0 should respond with the first item with the emotion: 'Joy'", () => {
         return supertest(app)
           .get(`/share/find?emotion=Joy&position=0`)
-          .expect(200, testShare);
+          .expect(200, testShareWithColor);
       });
     });
   });
