@@ -160,66 +160,30 @@ describe("pending endpoints", () => {
     });
   });
 
-  // describe("DELETE /share/:id", () => {
-  //   context(`Given no items`, () => {
-  //     it(`responds with 404`, () => {
-  //       const shareId = 123456;
-  //       return supertest(app)
-  //         .delete(`/share/${shareId}`)
-  //         .expect(404, {
-  //           error: { message: `Share with that id doesn't exist` },
-  //         });
-  //     });
-  //   });
-  //   context("Given there are rows in the database", () => {
-  //     const { testFeelings } = makeTestInput();
-  //     const { testShare } = makeTestShareInput();
+  describe("DELETE /pending/:id", () => {
+    context(`Given no items`, () => {
+      it(`responds with 404`, () => {
+        const shareId = 123456;
+        return supertest(app)
+          .delete(`/pending/${shareId}`)
+          .expect(404, {
+            error: { message: `Pending share with that id doesn't exist` },
+          });
+      });
+    });
+    context("Given there are rows in the database", () => {
+      const { testFeelings } = makeTestInput();
+      const { testShare } = makeTestShareInput();
 
-  //     beforeEach("insert items", async () => {
-  //       await db.into("feeling").insert(testFeelings);
-  //       await db.into("share").insert(testShare);
-  //     });
+      beforeEach("insert items", async () => {
+        await db.into("feeling").insert(testFeelings);
+        await db.into("pending").insert(testShare);
+      });
 
-  //     it("DELETE /share/:id responds with 204", () => {
-  //       const shareId = 1;
-  //       return supertest(app).delete(`/share/${shareId}`).expect(204);
-  //     });
-  //   });
-  // });
-
-  // describe("GET /share/find?emotion=Joy&position=0", () => {
-  //   context(`Given no items`, () => {
-  //     it(`responds with 404`, () => {
-  //       return supertest(app)
-  //         .get(`/share/find?emotion=Joy&position=0`)
-  //         .expect(204);
-  //     });
-  //   });
-  //   context("Given there are rows in the database", () => {
-  //     const { testFeelings } = makeTestInput();
-  //     const { testShare } = makeTestShareInput();
-  //     const testShareWithColor = [
-  //       {
-  //         id: 1,
-  //         audio_share: "testURLstring",
-  //         text_share: null,
-  //         emotion: "Joy",
-  //         color: "Blue",
-  //         feeling_id: 1,
-  //         share_type: "Audio",
-  //       },
-  //     ];
-
-  //     beforeEach("insert items", async () => {
-  //       await db.into("feeling").insert(testFeelings);
-  //       await db.into("share").insert(testShare);
-  //     });
-
-  //     it("GET /share/find?emotion=Joy&position=0 should respond with the first item with the emotion: 'Joy'", () => {
-  //       return supertest(app)
-  //         .get(`/share/find?emotion=Joy&position=0`)
-  //         .expect(200, testShareWithColor);
-  //     });
-  //   });
-  // });
+      it("DELETE /pending/:id responds with 204", () => {
+        const shareId = 1;
+        return supertest(app).delete(`/pending/${shareId}`).expect(204);
+      });
+    });
+  });
 });
