@@ -18,7 +18,7 @@
 
 ## API endpoints
 
-- ### List all feelings
+- ### Get all feelings
 
   `GET /feeling`
   This returns a list of all feeling objects in the feeling table.
@@ -349,6 +349,255 @@
   #### Response
 
   `Status 204 No Content`
+
+- ### Get all pending posts
+
+  `GET /pending`
+  Returns a list of all the pending share objects in the pending table
+
+  #### Response
+
+  `Status: 200 Okay`
+
+  ```json
+  [
+    {
+      "id": 23,
+      "audio_share": "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/792366031%3Fsecret_token%3Ds-d720mgO62E7",
+      "text_share": null,
+      "feeling_id": 123,
+      "share_type": "Audio",
+      "emotion": "Sadness"
+    },
+    {
+      "id": 24,
+      "audio_share": null,
+      "text_share": "Example of a text share",
+      "feeling_id": 124,
+      "share_type": "Text",
+      "emotion": "Fear"
+    }
+  ]
+  ```
+
+- ### Add new pending share
+
+  `POST /pending`
+  This adds a new pending share object to the pending table.
+
+  #### Parameters
+
+  | Name          | Type     | Description                                                                                                                                                                                                                                                |
+  | ------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `emotion`     | `string` | Value representing the emotion of the user being one of: `Joy`, `Sadness`, `Anger`, `Fear`, `Anxiety`, `Excitement`, `Guilt`, `Gratitude`, `Contentment`, `Shame`, `Loneliness`,`Pride`, `Power`, `Confusion`, `Nothing`, or `Disappointment` **Required** |
+  | `audio_share` | `string` | Url with a direct link to a soundcloud audio file. One of either `audio_share` or `text_share` is **Required**.                                                                                                                                            |
+  | `text_share`  | `string` | String from a user, talking about their experiences and emotions. One of either `audio_share` or `text_share` is **Required**.                                                                                                                             |
+  | `share_type`  | `string` | Type of share that the user has chosen being one of: `Text` or `Audio` **Required**                                                                                                                                                                        |
+  | `feeling_id`  | `int`    | An id that matches an existing feeling's id **Required**                                                                                                                                                                                                   |
+
+  example:
+
+  ```json
+  {
+    "audio_share": "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/792366031%3Fsecret_token%3Ds-d720mgO62E7",
+    "feeling_id": 123,
+    "share_type": "Audio",
+    "emotion": "Sadness"
+  }
+  ```
+
+  #### Response
+
+  `Status: 201 Created`
+
+  ```json
+  {
+    "id": 23,
+    "audio_share": "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/792366031%3Fsecret_token%3Ds-d720mgO62E7",
+    "text_share": null,
+    "feeling_id": 123,
+    "share_type": "Audio",
+    "emotion": "Sadness"
+  }
+  ```
+
+- ### Approve pending share
+
+  `PATCH /pending/:share_id/?status=accept`
+
+  This moves a post from the pending table to the share table.
+
+  - First it creates a new post in the share table.
+  - Then deletes the approved post from the pending table.
+  - Then responds with all remaining posts in the pending table.
+
+  #### Parameters
+
+  This endpoint requires both the valid id of a pending share and a `status` query of either `"accept"` or `"deny"`.
+
+  example:
+
+  ```javascript
+  fetch(`https://ifeelthat-api.herokuapp.com/pending/23/?status=accept`, {
+    method: "PATCH",
+    headers: {
+      "content-type": "application/json",
+    },
+  });
+  ```
+
+  #### Response
+
+  `Status: 200 OK`
+
+  ```json
+  [
+    {
+      "id": 23,
+      "audio_share": "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/792366031%3Fsecret_token%3Ds-d720mgO62E7",
+      "text_share": null,
+      "feeling_id": 123,
+      "share_type": "Audio",
+      "emotion": "Sadness"
+    },
+    {
+      "id": 24,
+      "audio_share": null,
+      "text_share": "Example of a text share",
+      "feeling_id": 124,
+      "share_type": "Text",
+      "emotion": "Fear"
+    }
+  ]
+  ```
+
+- ### Reject pending share
+
+  `PATCH /pending/:share_id/?status=deny`
+
+  This moves a post from the pending table to the archive table.
+
+  - First it creates a new post in the archive table.
+  - Then deletes the approved post from the pending table.
+  - Then responds with all remaining posts in the pending table.
+
+  #### Parameters
+
+  This endpoint requires both the valid id of a pending share and a `status` query of either `"accept"` or `"deny"`.
+
+  example:
+
+  ```javascript
+  fetch(`https://ifeelthat-api.herokuapp.com/pending/23/?status=deny`, {
+    method: "PATCH",
+    headers: {
+      "content-type": "application/json",
+    },
+  });
+  ```
+
+  #### Response
+
+  `Status: 200 OK`
+
+  ```json
+  [
+    {
+      "id": 23,
+      "audio_share": "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/792366031%3Fsecret_token%3Ds-d720mgO62E7",
+      "text_share": null,
+      "feeling_id": 123,
+      "share_type": "Audio",
+      "emotion": "Sadness"
+    },
+    {
+      "id": 24,
+      "audio_share": null,
+      "text_share": "Example of a text share",
+      "feeling_id": 124,
+      "share_type": "Text",
+      "emotion": "Fear"
+    }
+  ]
+  ```
+
+- ### Delete pending share
+
+  `DELETE /pending/:share_id`
+  This deletes the pending share with the associated id from the pending table
+
+  The request takes a valid id as a request param.
+
+  example:
+
+  ```javascript
+  fetch(`https://ifeelthat-api.herokuapp.com/share/23`, {
+    method: "DELETE",
+    headers: {
+      "content-type": "application/json",
+    },
+  });
+  ```
+
+  #### Response
+
+  `Status 204 No Content`
+
+- ### Get all archived posts
+
+  `GET /archive`
+  Returns a list of all the share objects in the archive table
+
+  #### Response
+
+  `Status: 200 Okay`
+
+  ```json
+  [
+    {
+      "id": 23,
+      "audio_share": "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/792366031%3Fsecret_token%3Ds-d720mgO62E7",
+      "text_share": null,
+      "feeling_id": 123,
+      "share_type": "Audio",
+      "emotion": "Sadness"
+    },
+    {
+      "id": 24,
+      "audio_share": null,
+      "text_share": "Example of a text share",
+      "feeling_id": 124,
+      "share_type": "Text",
+      "emotion": "Fear"
+    }
+  ]
+  ```
+
+- ### Add new archived share
+
+  `POST /archive`
+  This adds a new share object to the archive table.
+
+  #### Parameters
+
+  | Name          | Type     | Description                                                                                                                                                                                                                                                |
+  | ------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `emotion`     | `string` | Value representing the emotion of the user being one of: `Joy`, `Sadness`, `Anger`, `Fear`, `Anxiety`, `Excitement`, `Guilt`, `Gratitude`, `Contentment`, `Shame`, `Loneliness`,`Pride`, `Power`, `Confusion`, `Nothing`, or `Disappointment` **Required** |
+  | `audio_share` | `string` | Url with a direct link to a soundcloud audio file. One of either `audio_share` or `text_share` is **Required**.                                                                                                                                            |
+  | `text_share`  | `string` | String from a user, talking about their experiences and emotions. One of either `audio_share` or `text_share` is **Required**.                                                                                                                             |
+  | `share_type`  | `string` | Type of share that the user has chosen being one of: `Text` or `Audio` **Required**                                                                                                                                                                        |
+  | `feeling_id`  | `int`    | An id that matches an existing feeling's id **Required**                                                                                                                                                                                                   |
+
+  example:
+
+  ```json
+  {
+    "audio_share": "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/792366031%3Fsecret_token%3Ds-d720mgO62E7",
+    "feeling_id": 123,
+    "share_type": "Audio",
+    "emotion": "Sadness"
+  }
+  ```
 
 ## Database Seeding Scripts
 
