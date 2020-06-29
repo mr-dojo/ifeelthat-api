@@ -46,43 +46,4 @@ ArchiveRouter.route("/")
       .catch(next);
   });
 
-// ArchiveRouter.route("/:id")
-//   .all((req, res, next) => {
-//     ArchiveService.getShareById(req.app.get("db"), req.params.id)
-//       .then((share) => {
-//         if (!share) {
-//           return res.status(404).json({
-//             error: { message: `Share with that id doesn't exist` },
-//           });
-//         }
-//         res.share = share;
-//         next();
-//       })
-//       .catch(next);
-//   })
-//   .get((req, res, next) => res.status(200).json(res.share))
-//   .patch(jsonParser, (req, res, next) => {
-//     const { audio_share, text_share, share_type, feeling_id } = req.body;
-//     const newShareDetails = { audio_share, text_share, share_type, feeling_id };
-
-//     if (!audio_share && !text_share && !share_type && !feeling_id) {
-//       return res.status(400).json({ error: { message: `Invalid input data` } });
-//     }
-
-//     ArchiveService.updateShare(
-//       req.app.get("db"),
-//       req.params.id,
-//       newShareDetails1
-//     )
-//       .then((updatedItem) => {
-//         res.status(202).send(updatedItem[0]);
-//       })
-//       .catch(next);
-//   })
-//   .delete(jsonParser, (req, res, next) => {
-//     ArchiveService.deleteShare(req.app.get("db"), req.params.id).then((r) => {
-//       res.status(204).end();
-//     });
-// });
-
 module.exports = ArchiveRouter;
