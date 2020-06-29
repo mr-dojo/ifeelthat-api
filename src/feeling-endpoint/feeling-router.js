@@ -9,7 +9,7 @@ feelingRouter
   .get((req, res, next) => {
     FeelingService.getFeelings(req.app.get("db"))
       .then((feelings) => {
-        res.send(200, feelings);
+        res.status(200).send(feelings);
       })
       .catch(next);
   })

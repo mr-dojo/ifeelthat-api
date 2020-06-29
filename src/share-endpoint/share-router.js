@@ -9,7 +9,7 @@ ShareRouter.route("/")
   .get((req, res, next) => {
     ShareService.getShares(req.app.get("db"))
       .then((shares) => {
-        res.send(200, shares);
+        res.status(200).send(shares);
       })
       .catch(next);
   })
